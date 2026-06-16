@@ -4,7 +4,8 @@ A Python-based job scraping and analytics platform that extracts startup job lis
 
 # Screenshots
 
-![Dashboard Preview](dashboard.png)
+![Dashboard Preview](1b.png)
+![Dashboard Preview](2b.png)
 
 ## Features
 

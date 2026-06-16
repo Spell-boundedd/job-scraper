@@ -1,14 +1,23 @@
-# Job Scraper
+# Job Scraper Dashboard
 
-A Python-based web scraper that extracts startup job listings from Hacker News Jobs and stores them in CSV format.
+A Python-based job scraping and analytics platform that extracts startup job listings from Hacker News Jobs and visualizes hiring trends using Streamlit.
+
+# Screenshots
+
+![Dashboard Preview](dashboard.png)
 
 ## Features
 
-* Scrapes live job listings
-* Extracts company names
-* Saves data automatically
-* Exports structured CSV files
-* Uses BeautifulSoup for HTML parsing
+* Scrapes live startup job postings
+* Extracts:
+
+  * company names
+  * job titles
+  * posting dates
+  * job links
+* Saves structured CSV datasets
+* Generates hiring analytics
+* Interactive dashboard using Streamlit
 
 ## Technologies Used
 
@@ -16,13 +25,30 @@ A Python-based web scraper that extracts startup job listings from Hacker News J
 * Requests
 * BeautifulSoup
 * Pandas
+* Streamlit
+* Git/GitHub
 
-## Run the Project
+## Run Scraper
 
 ```bash
 python main.py
 ```
 
-## Output
+## Run Dashboard
 
-CSV files are saved in the `data/` folder.
+```bash
+streamlit run dashboard.py
+```
+
+## Project Structure
+
+```text
+job-scraper/
+│
+├── data/
+├── main.py
+├── dashboard.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+```

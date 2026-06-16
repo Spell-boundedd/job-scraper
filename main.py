@@ -19,20 +19,41 @@ jobs = []
 
 job_titles = soup.find_all("span", class_="titleline")
 
-for job in job_titles:
-    link = job.find("a")
+job_rows = soup.find_all("tr", class_="athing submission")
 
-    if link:
-        text = link.text
+for row in job_rows:
 
-        company = text.split(" Is Hiring")[0]
-        company = company.split(" is hiring")[0]
+    titleline = row.find("span", class_="titleline")
 
-        jobs.append({
-        "Company": company,
-        "Job Title": text,
-        "Link": link["href"]
-    })
+    if titleline:
+        link_tag = titleline.find("a")
+
+        if link_tag:
+
+            title = link_tag.text
+            link = link_tag["href"]
+
+            company = title.split(" Is Hiring")[0]
+            company = company.split(" is hiring")[0]
+
+            company = company.split("(")[0].strip()
+
+            next_row = row.find_next_sibling("tr")
+
+            age = "Unknown"
+
+            if next_row:
+                age_tag = next_row.find("span", class_="age")
+
+                if age_tag:
+                    age = age_tag.text
+
+            jobs.append({
+                "Company": company,
+                "Job Title": title,
+                "Posted": age,
+                "Link": link
+            })
 
 df = pd.DataFrame(jobs)
 
@@ -41,3 +62,8 @@ print(df.head(10))
 df.to_csv(f"data/jobs_{timestamp}.csv", index=False)
 
 print(f"\nSaved {len(df)} jobs to data/jobs_{timestamp}.csv")
+print("\nTop Companies Hiring:\n")
+
+top_companies = df["Company"].value_counts()
+
+print(top_companies.head(10))

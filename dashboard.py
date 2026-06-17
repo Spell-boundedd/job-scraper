@@ -9,6 +9,10 @@ csv_files = glob.glob("data/*.csv")
 latest_file = max(csv_files)
 
 df = pd.read_csv(latest_file)
+search = st.text_input("Search Job Titles")
+
+if search:
+    df = df[df["Job Title"].str.contains(search, case=False, na=False)]
 
 st.write("Latest Scraped Jobs")
 st.dataframe(df)

@@ -13,7 +13,13 @@ search = st.text_input("Search Job Titles")
 
 if search:
     df = df[df["Job Title"].str.contains(search, case=False, na=False)]
+company_filter = st.selectbox(
+    "Filter by Company",
+    ["All"] + sorted(df["Company"].unique())
+)
 
+if company_filter != "All":
+    df = df[df["Company"] == company_filter]
 st.write("Latest Scraped Jobs")
 st.dataframe(df)
 

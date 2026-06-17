@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import glob
-
+from collections import Counter
+st.sidebar.title("Controls")
 st.title("Startup Job Analytics Dashboard")
 
 st.caption(
@@ -15,14 +16,15 @@ csv_files = glob.glob("data/*.csv")
 latest_file = max(csv_files)
 
 df = pd.read_csv(latest_file)
-search = st.text_input("Search Job Titles")
+st.write(f"Current dataset: {latest_file}")
+search = st.sidebar.text_input("Search Job Titles")
 
-if search:
-    df = df[df["Job Title"].str.contains(search, case=False, na=False)]
-company_filter = st.selectbox(
+company_filter = st.sidebar.selectbox(
     "Filter by Company",
     ["All"] + sorted(df["Company"].unique())
 )
+if search:
+    df = df[df["Job Title"].str.contains(search, case=False, na=False)]
 
 if company_filter != "All":
     df = df[df["Company"] == company_filter]
@@ -48,8 +50,24 @@ st.download_button(
     mime="text/csv"
 )
 
-st.subheader("Top Hiring Companies")
 
-top_companies = df["Company"].value_counts()
+top_companies = df["Company"].value_counts().head(10)
 
-st.bar_chart(top_companies.head(10))
+st.subheader("Top 10 Hiring Companies")
+
+st.bar_chart(top_companies)
+words = []
+
+for title in df["Job Title"]:
+    words.extend(title.lower().split())
+
+common_words = Counter(words)
+
+st.subheader("Most Common Job Keywords")
+
+keyword_df = pd.DataFrame(
+    common_words.most_common(10),
+    columns=["Keyword", "Count"]
+)
+
+st.dataframe(keyword_df)
